@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" width="16" height="16" tilewidth="16" tileheight="16" infinite="0" nextlayerid="7" nextobjectid="11">
+ <editorsettings>
+  <export target="map.lua" format="lua"/>
+ </editorsettings>
+ <tileset firstgid="1" name="Wall" tilewidth="16" tileheight="16" tilecount="1020" columns="20">
+  <image source="Wall.png" width="320" height="816"/>
+ </tileset>
+ <tileset firstgid="1021" name="Floor" tilewidth="16" tileheight="16" tilecount="819" columns="21">
+  <image source="Floor.png" width="336" height="624"/>
+ </tileset>
+ <tileset firstgid="1840" name="Decor0" tilewidth="16" tileheight="16" tilecount="176" columns="8">
+  <image source="Decor0.png" width="128" height="352"/>
+ </tileset>
+ <tileset firstgid="2016" name="Key" tilewidth="16" tileheight="16" tilecount="8" columns="8">
+  <image source="Key.png" width="128" height="16"/>
+ </tileset>
+ <tileset firstgid="2024" name="Chest0" tilewidth="16" tileheight="16" tilecount="24" columns="8">
+  <image source="Chest0.png" width="128" height="48"/>
+ </tileset>
+ <tileset firstgid="2048" name="Door0" tilewidth="16" tileheight="16" tilecount="48" columns="8">
+  <image source="Door0.png" width="128" height="96"/>
+ </tileset>
+ <layer id="2" name="base" width="16" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA+NiYGDgohDbArEdFhyKQxyE7ZH0BwKxDQvQHCRsx4JdHFkOWX8gUCwICQezYBdHlhvVP6ofm/50qJogEvSnQfURgzPQ9KfiySfYMAcH0Bwq5FsQBgDAwRuRAAQAAA==
+  </data>
+ </layer>
+ <layer id="1" name="objects" width="16" height="16">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA2NgGByggp32dnTSwQ5agswh7v7BDG7SOGxvDNK4AwB1hxc2AAQAAA==
+  </data>
+ </layer>
+ <objectgroup id="5" name="teleport_points">
+  <object id="4" name="G" type="teleport" gid="1059" x="208" y="240" width="16" height="16">
+   <properties>
+    <property name="to" value="A"/>
+   </properties>
+  </object>
+  <object id="5" name="A" type="spawn" gid="1059" x="208" y="208" width="16" height="16"/>
+ </objectgroup>
+ <layer id="3" name="collision" width="16" height="16" visible="0" opacity="0.5">
+  <properties>
+   <property name="collidable" type="bool" value="true"/>
+  </properties>
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA5NnYGCQHyQYHWATQ5bDpxebfnk0Nqn6KbWfUv1D3f2DWT8t0h8+syjNJ9TKcwDhsnF+AAQAAA==
+  </data>
+ </layer>
+</map>
