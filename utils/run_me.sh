@@ -7,7 +7,6 @@ if [ $# -ge 1 ];then
   	*)
 	cd $1
 	read -r -a arr <<< $(find -iname *0.png | tr '\n' ' ' | sed 's/\.\///g' | sed 's/0\.png//g');
-	pwd;
 	echo ${arr[*]} | python3 ../utils/make_merged_tiles.py
 	;;
   esac

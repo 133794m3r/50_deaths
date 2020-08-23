@@ -14,6 +14,7 @@ import sys
 files_str = sys.stdin.readline()
 files = files_str.rstrip().split(' ')
 
+out_dir = '/tmp'
 TILE_SIZE = 16
 TILES_HIGH = 0
 TILES_WIDE = 0
@@ -116,5 +117,5 @@ for file in files:
 			counter += 1
 		counter += 1
 
-	num_img.save(f'/tmpdownload/{new_filename}_numbered.png')
-	new_img.save(f'/tmpdownload/{new_filename}.png')
+	num_img.save(f'{out_dir}/{new_filename}_numbered.png')
+	new_img.save(f'{out_dir}/{new_filename}.png')
