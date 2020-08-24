@@ -12,6 +12,7 @@ import sys
 # 	files = []
 # 	for line in fh.readlines():
 # 		files.append(line.rstrip())
+from utils.tiles_config import get_file_infos
 
 files_str = sys.stdin.readline()
 files = files_str.rstrip().split(' ')
@@ -25,7 +26,7 @@ TILES_WIDE = 0
 BLOCK_HEIGHT = 16
 BLOCK_WIDTH = 16
 # Scale is used for the numbered ones to make it easier to see.
-SCALE = 3
+SCALE = 4
 # Font size is 4 pixels times the scale to make it not take up too much space.
 font_size = 4 * SCALE
 # The color by default is bright Yellow.
@@ -36,12 +37,7 @@ font = ImageFont.truetype('SDS_8x8.ttf', font_size)
 for file in files:
 	# The counter is reset every time.
 	counter = 1
-	# split it to get just the filename.
-	split_str = file.split('/')
-	# the filename is the last item in the list.
-	new_filename = split_str[-1]
-	# the folder is the first item.
-	folder = split_str[0]
+
 	# the first image is the one ending in 0.
 	img0 = Image.open(f'{file}0.png')
 	# second one in the animation tiles ends in 1.
@@ -52,35 +48,7 @@ for file in files:
 	# then create a new image that is twice as wide.
 	new_img = Image.new('RGBA', (img0.size[0] * 2, img0.size[1]))
 
-	# the lines below are due to the blocks of each "section" being different.
-	if new_filename in "Tree":
-		# Trees "blocks" or what is one set of the same pattern is 3 tiles high by 6 wide.
-		BLOCK_HEIGHT = TILE_SIZE * 3
-		BLOCK_WIDTH = TILE_SIZE * 6
-
-	elif new_filename in "Pit":
-		# the pits are all 2x3.
-		BLOCK_HEIGHT = TILE_SIZE * 2
-		BLOCK_WIDTH = TILE_SIZE * 3
-	elif new_filename in "Hill":
-		# The Hill sprite is 4x4.
-		BLOCK_WIDTH = TILE_SIZE * 4
-		BLOCK_HEIGHT = TILE_SIZE * 4
-	elif new_filename in "Map":
-		# The map ones are 3x3
-		BLOCK_HEIGHT = TILE_SIZE * 3
-		BLOCK_WIDTH = TILE_SIZE * 3
-	elif new_filename in "Ore":
-		# The ore is 2x2 tiles.
-		BLOCK_WIDTH = TILE_SIZE * 2
-		BLOCK_HEIGHT = TILE_SIZE * 2
-	elif new_filename == "Effect":
-		# Effects start off as 3x3.
-		BLOCK_WIDTH = TILE_SIZE * 3
-		BLOCK_HEIGHT = TILE_SIZE * 3
-	else:
-		# all others are just a single tile wide and high.
-		BLOCK_HEIGHT, BLOCK_WIDTH = TILE_SIZE, TILE_SIZE
+	BLOCK_HEIGHT, BLOCK_WIDTH, folder, new_filename = get_file_infos(file)
 
 	# create our crop image and make it be the same size as our block.
 	cropped_img = Image.new("RGBA", (BLOCK_WIDTH, BLOCK_HEIGHT))
