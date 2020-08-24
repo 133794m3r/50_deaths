@@ -52,8 +52,8 @@ for file in files:
 		BLOCK_HEIGHT = TILE_SIZE * 2
 	elif new_filename == "Effect":
 		# Effects start off as 3x3.
-		BLOCK_WIDTH = TILE_SIZE
-		BLOCK_HEIGHT = TILE_SIZE
+		BLOCK_WIDTH = TILE_SIZE * 3
+		BLOCK_HEIGHT = TILE_SIZE * 3
 	else:
 	#all others are just a single tile wide and high.
 		BLOCK_HEIGHT, BLOCK_WIDTH = TILE_SIZE, TILE_SIZE
@@ -69,10 +69,34 @@ for file in files:
 	TILES_WIDE = img0.size[0] // TILE_SIZE
 	tiles_y = 0
 	print('bw', BLOCK_WIDTH)
+	BLOCK_TILES = BLOCK_WIDTH // TILE_SIZE
 	for y in range(TILES_HIGH):
+		if new_filename == "Effect":
+			print('effect', y)
+			# for row 14+ we go to 1x1 objects.
+			if y > 14:
+				BLOCK_WIDTH = TILE_SIZE
+				BLOCK_HEIGHT = TILE_SIZE
+				BLOCK_TILES = 1
+
+		# The reptiles has the guys logo at the bottom and to just copy it once I do it here.
+		elif new_filename == "Reptile" and y > 11:
+			crop_x0 = 0
+			crop_x1 = TILE_SIZE * 8
+			crop_y0 = y * TILE_SIZE
+			crop_y1 = (y + 4) * TILE_SIZE
+			cropped_img = img0.crop((crop_x0, crop_y0, crop_x1, crop_y1))
+			new_img.paste(cropped_img, (0, y * BLOCK_HEIGHT))
+			# the second cropped image cropped again with the same values.
+			cropped_img = img1.crop((crop_x0, crop_y0, crop_x1, crop_y1))
+			paste_x1 = (BLOCK_WIDTH * 8)
+			# paste them into our image.
+			new_img.paste(cropped_img, (paste_x1, y * BLOCK_HEIGHT))
+			break
 		# if the filename is effect we have to do it special.
 		middle_y = (y * TILE_SIZE) + TILE_SIZE // 2
-		tiles_y = (TILES_WIDE * y) + counter +1
+		tiles_y = (TILES_WIDE * y) + counter + 1
+
 		for x in range(BLOCKS_WIDE):
 			blank_pixels = 0
 			for z in range(BLOCK_WIDTH):
@@ -85,11 +109,13 @@ for file in files:
 						blank_pixels += 1
 
 			if blank_pixels != BLOCK_WIDTH:
-				print('xa,xb', tiles_y + (x * 2), tiles_y + (x * 2) + 1)
 				if BLOCK_WIDTH == 16:
-					sprites.append((tiles_y + (x * 2), tiles_y + (x * 2) + 1))
+					sprites.append((tiles_y + (x * BLOCK_TILES), tiles_y + (x * BLOCK_TILES) + 1))
 				else:
-					sprites.append([(tiles_y + (x * 2) + a,tiles_y + (x*2) + a +1) for a in range(BLOCKS_WIDE)])
-
+					tmp_sprites = []
+					# for _ in range(BLOCKS_WIDE)
+					sprites.append([(tiles_y + (x *BLOCK_TILES) + a,tiles_y + (x* BLOCK_TILES) + a + BLOCK_TILES) for a in range(BLOCK_TILES)])
+			#if BLOCK_WIDTH != 16:
+				tiles_y += BLOCK_TILES
 		counter += TILES_WIDE
 	print(sprites)

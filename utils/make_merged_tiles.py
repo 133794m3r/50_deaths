@@ -90,14 +90,12 @@ for file in files:
 		# if the filename is effect we have to do it special.
 		if new_filename == "Effect":
 			print('effect', y)
-			# When we're on the 15th row it switches to being 2 wide and 1 high.
+			#from this row on we do just 1x1 blocks.
 			if y > 14:
-				BLOCK_WIDTH = TILE_SIZE * 2
-				BLOCK_HEIGHT = TILE_SIZE
-			# then on row 21 and till the end it's just 1x1.
-			elif y > 20:
 				BLOCK_WIDTH = TILE_SIZE
 				BLOCK_HEIGHT = TILE_SIZE
+				BLOCK_TILES = 1
+
 		# The reptiles has the guys logo at the bottom and to just copy it once I do it here.
 		elif new_filename == "Reptile" and y > 11:
 			crop_x0 = 0
@@ -165,8 +163,8 @@ for file in files:
 		#counter += 1
 
 	# save both images.
-	#new_img = new_img.convert("P", palette=Image.ADAPTIVE, colors=16)
-	#num_img = num_img.convert("P", palette=Image.ADAPTIVE, colors=32)
+	new_img = new_img.convert("P", palette=Image.ADAPTIVE, colors=16)
+	num_img = num_img.convert("P", palette=Image.ADAPTIVE, colors=32)
 	# num_img = num_img.tobytes()
 	# new_img = new_img.tobytes()
 	#
