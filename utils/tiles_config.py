@@ -1,11 +1,11 @@
-def get_file_infos(file):
+def get_file_infos(file, TILE_SIZE = 16):
 	# then create a new image that is twice as wide.
 	# split it to get just the filename.
 	split_str = file.split('/')
 	# the filename is the last item in the list.
 	new_filename = split_str[-1]
 	# the folder is the first item.
-	folder = split_str[0]
+	folder = split_str[-2]
 
 	# the lines below are due to the blocks of each "section" being different.
 	if new_filename == "Tree":

@@ -12,7 +12,8 @@ import sys
 # 	files = []
 # 	for line in fh.readlines():
 # 		files.append(line.rstrip())
-from utils.tiles_config import get_file_infos
+
+from tiles_config import get_file_infos
 
 files_str = sys.stdin.readline()
 files = files_str.rstrip().split(' ')
