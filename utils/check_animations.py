@@ -48,10 +48,18 @@ for file in files:
 				BLOCK_TILES = 1
 
 		# The reptiles has the guys logo at the bottom and to just copy it once I do it here.
-		elif new_filename == "Reptile" and y > 11:
-			BLOCK_WIDTH = TILE_SIZE * 8
-			BLOCKS_WIDE = (img0.size[0] // BLOCK_WIDTH)
-			BLOCK_TILES = 8
+		elif new_filename == "Reptile":
+			# The 12th row and onwards has no animations and is just part of the textbox. No reason to include it.
+			if y > 12:
+				break
+			elif y > 11:
+				# BLOCK_WIDTH = TILE_SIZE * 8
+				# BLOCKS_WIDE = (img0.size[0] // BLOCK_WIDTH)
+				# BLOCK_TILES = 8
+				# special case just for this single sprite b/c it's the only one that doesn't follow the pattern.
+				sprites.append((196,204))
+				break
+
 		# if the filename is effect we have to do it special.
 		middle_y = (y * TILE_SIZE) + TILE_SIZE // 2
 		tiles_y = (TILES_WIDE * y) + counter + 1
