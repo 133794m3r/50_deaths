@@ -37,7 +37,7 @@ font = ImageFont.truetype('SDS_8x8.ttf', font_size)
 # We read all of the files.
 for file in files:
 	# The counter is reset every time.
-	counter = 1
+	counter = 0
 
 	# the first image is the one ending in 0.
 	img0 = Image.open(f'{file}0.png')

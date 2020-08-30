@@ -18,10 +18,17 @@ BLOCK_WIDTH = 16
 # Scale is used for the numbered ones to make it easier to see.
 SCALE = 3
 TILESET_TEMPLATE_START = """<?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.4" tiledversion="1.4.2" name="%s" tilewidth="16" tileheight="16" tilecount="%d" columns="%d">
-	<image source="../../combined_assets/%s/%s" width="%d" height="%d"/>"""
+<tileset version="1.4" tiledversion="1.4.2" name="{filename}" tilewidth="16" tileheight="16" tilecount="{total_tiles}" columns="{tiles_width}">
+ <image source="../../combined_assets/{folder}/{filename}.png" width="{img_width}" height="{img_height}"/>"""
+TILE_ANIMATION_TEMPLATE = """\n <tile id="{id}">
+  <animation>
+    <frame tileid="{id}" duration="500" />
+    <frame tileid="{id2}" duration="500" />
+  </animation>
+ </tile>"""
+
 for file in files:
-	print(file)
+	#print(file)
 	img0 = Image.open(f'{file}0.png')
 	pixels = img0.load()
 
@@ -38,7 +45,8 @@ for file in files:
 	tiles_y = 0
 	BLOCK_TILES = BLOCK_WIDTH // TILE_SIZE
 	TOTAL_TILES = TILES_HIGH * TILES_WIDE
-	print(TILESET_TEMPLATE_START % (new_filename, TOTAL_TILES, TILES_WIDE, folder, new_filename, img0.size[1], img0.size[0]))
+	#print(TILESET_TEMPLATE_START % (new_filename, TOTAL_TILES*2, TILES_WIDE * 2, folder, new_filename, img0.size[0]*2, img0.size[1]))
+	tileset_xml = TILESET_TEMPLATE_START.format(filename=new_filename, total_tiles=TOTAL_TILES*2,tiles_width=TILES_WIDE*2,folder=folder,img_width=img0.size[0],img_height=img0.size[1])
 	for y in range(TILES_HIGH):
 		if new_filename == "Effect":
 			# for row 14+ we go to 1x1 objects.
@@ -76,14 +84,18 @@ for file in files:
 
 			if blank_pixels != BLOCK_WIDTH:
 				if BLOCK_WIDTH == 16:
+					tileset_xml += TILE_ANIMATION_TEMPLATE.format(id=tiles_y + (x * BLOCK_TILES) - 1,id2=tiles_y + (x * BLOCK_TILES))
 					sprites.append((tiles_y + (x * BLOCK_TILES), tiles_y + (x * BLOCK_TILES) + 1))
 				else:
 					tmp_sprites = []
-
+					frame0 = tiles_y + (x * BLOCK_TILES)
+					frame1 = tiles_y + (x * BLOCK_TILES) + BLOCK_TILES
 					for a in range(BLOCK_TILES):
+						tileset_xml += TILE_ANIMATION_TEMPLATE.format(id = frame0 + a - 1,id2=frame1 + a -1)
 						sprites.append(
 							# [
-							(tiles_y + (x * BLOCK_TILES) + a, tiles_y + (x * BLOCK_TILES) + a + BLOCK_TILES)
+							(frame0 + a, frame1 + a)
+							#(tiles_y + (x * BLOCK_TILES) + a, tiles_y + (x * BLOCK_TILES) + a + BLOCK_TILES)
 						)
 				# for a in range(BLOCK_TILES)])
 
@@ -91,4 +103,6 @@ for file in files:
 
 		counter += TILES_WIDE
 
+	tileset_xml += "\n</tileset>"
 	print(sprites)
+	print(tileset_xml)
