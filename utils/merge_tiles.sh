@@ -13,5 +13,5 @@ if [ $# -ge 1 ];then
 	;;
   esac
 else
-  echo $#;
+  	echo -e "Usage: $0 <diectory_to_the_combined_tiles>|-h\nThis script will combine all of the individual tilesheets into a single one so that you can utilize Tiled's animation mode and also more easily animation your character for animations."
 fi

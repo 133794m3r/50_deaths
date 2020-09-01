@@ -64,7 +64,9 @@ for file in files:
 				BLOCK_WIDTH = TILE_SIZE
 				BLOCK_HEIGHT = TILE_SIZE
 				BLOCK_TILES = 1
-
+		elif new_filename == "GUI" and y > 6:
+			BLOCK_WIDTH = TILE_SIZE * 4
+			BLOCK_TILES = 4
 		# The reptiles has the guys logo at the bottom and to just copy it once I do it here.
 		elif new_filename == "Reptile" and y > 11:
 			crop_x0 = 0
@@ -144,6 +146,7 @@ for file in files:
 	print(file)
 	# num_img.save(f'{out_dir}/{folder}/{new_filename}_numbered.png')
 	# new_img.save(f'{out_dir}/{folder}/{new_filename}.png')
+	os.makedirs(f"/tmpdownload/{folder}", exist_ok=True)
 	print(f'{out_dir}/{file}.png')
 	num_img.save(f'{out_dir}/{file}_numbered.png')
 	new_img.save(f'{out_dir}/{file}.png')
