@@ -50,12 +50,13 @@ for file in files:
 	new_img = Image.new('RGBA', (img0.size[0] * 2, img0.size[1]))
 
 	BLOCK_HEIGHT, BLOCK_WIDTH, folder, new_filename = get_file_infos(file)
-
+	BLOCKS_WIDE = (img0.size[0] // BLOCK_WIDTH)
 	# create our crop image and make it be the same size as our block.
 	cropped_img = Image.new("RGBA", (BLOCK_WIDTH, BLOCK_HEIGHT))
 
 	# Iterate over every tile.
 	for y in range(TILES_HIGH):
+		z = 0
 		# if the filename is effect we have to do it special.
 		if new_filename == "Effect":
 			print('effect', y)
@@ -83,25 +84,28 @@ for file in files:
 			break
 		# else:
 			# Otherwise we iterate over all of the tiles
-		for x in range(TILES_WIDE):
+		#for x in range(TILES_WIDE):
+		for x in range(BLOCKS_WIDE):
 			# we create a cropping rectangle the same size as the block.
 			# And we put it's upper left point be our curent cursor.
 
-			crop_x0 = (x * BLOCK_WIDTH)
-			crop_x1 = (x * BLOCK_WIDTH + BLOCK_WIDTH)
+			crop_x0 = (x * BLOCK_WIDTH) + z
+			crop_x1 = (x * BLOCK_WIDTH + BLOCK_WIDTH) + z
 			crop_y0 = (y * BLOCK_HEIGHT)
 			crop_y1 = (y * BLOCK_HEIGHT + BLOCK_HEIGHT)
 			# Crop the image from the first image.
 			cropped_img = img0.crop((crop_x0, crop_y0, crop_x1, crop_y1))
-			paste_x0 = (x * BLOCK_WIDTH * 2)
+			paste_x0 = (x * BLOCK_WIDTH * 2) + z
 			# we move the second cropped block over by 1 block.
-			paste_x1 = (x * BLOCK_WIDTH * 2 + BLOCK_WIDTH)
+			paste_x1 = (x * BLOCK_WIDTH * 2 + BLOCK_WIDTH) + z
 			# paste it into the new image based upon our iteration count.
 			new_img.paste(cropped_img, (paste_x0, y * BLOCK_HEIGHT))
 			# the second cropped image cropped again with the same values.
 			cropped_img = img1.crop((crop_x0, crop_y0, crop_x1, crop_y1))
 			# paste them into our image.
 			new_img.paste(cropped_img, (paste_x1, y * BLOCK_HEIGHT))
+			if new_filename == "Ore":
+				z = TILE_SIZE
 
 	num_img = new_img
 	# We resize the image to be larger to see it more easily when doing tile designing decisions.

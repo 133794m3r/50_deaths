@@ -27,7 +27,7 @@ def get_file_infos(file, TILE_SIZE = 16):
 		BLOCK_WIDTH = TILE_SIZE * 3
 	elif new_filename == "Ore":
 		# The ore is 2x2 tiles.
-		BLOCK_WIDTH = TILE_SIZE * 5
+		BLOCK_WIDTH = TILE_SIZE * 4
 		BLOCK_HEIGHT = TILE_SIZE * 1
 	elif new_filename == "Effect":
 		# Effects start off as 3x3.

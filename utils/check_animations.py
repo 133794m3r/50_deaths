@@ -53,8 +53,9 @@ for file in files:
 	tileset_xml = TILESET_TEMPLATE_START.format(filename=new_filename, total_tiles=TOTAL_TILES*2,
 												tiles_width=TILES_WIDE*2, folder=folder,
 												img_width=img0.size[0] * 2, img_height=img0.size[1])
-	if new_filename ==
+	PAD = 0
 	for y in range(TILES_HIGH):
+		PAD = 0
 		if new_filename == "Effect":
 			# for row 14+ we go to 1x1 objects.
 			if y > 14:
@@ -85,6 +86,7 @@ for file in files:
 		tiles_y = (TILES_WIDE * y) + counter + 1
 
 		for x in range(BLOCKS_WIDE):
+
 			blank_pixels = 0
 			for z in range(BLOCK_WIDTH):
 				cur_pixel = img0.getpixel(((x * BLOCK_WIDTH) + z, middle_y))
@@ -97,14 +99,14 @@ for file in files:
 
 			if blank_pixels != BLOCK_WIDTH:
 				if BLOCK_WIDTH == 16:
-					tileset_xml += TILE_ANIMATION_TEMPLATE.format(id=tiles_y + (x * BLOCK_TILES) - 1,id2=tiles_y + (x * BLOCK_TILES))
+					tileset_xml += TILE_ANIMATION_TEMPLATE.format(id=tiles_y + (x * BLOCK_TILES) - 1 + PAD,id2=tiles_y + (x * BLOCK_TILES) + PAD)
 					sprites.append((tiles_y + (x * BLOCK_TILES), tiles_y + (x * BLOCK_TILES) + 1))
 				else:
 					tmp_sprites = []
 					frame0 = tiles_y + (x * BLOCK_TILES)
 					frame1 = tiles_y + (x * BLOCK_TILES) + BLOCK_TILES
 					for a in range(BLOCK_TILES):
-						tileset_xml += TILE_ANIMATION_TEMPLATE.format(id=frame0 + a - 1, id2=frame1 + a - 1)
+						tileset_xml += TILE_ANIMATION_TEMPLATE.format(id=frame0 + a - 1 + PAD, id2=frame1 + a - 1 + PAD)
 						sprites.append(
 							# [
 							(frame0 + a, frame1 + a)
@@ -113,6 +115,9 @@ for file in files:
 				# for a in range(BLOCK_TILES)])
 
 				tiles_y += BLOCK_TILES
+
+			if new_filename == "Ore":
+				PAD = 1
 
 		counter += TILES_WIDE
 
