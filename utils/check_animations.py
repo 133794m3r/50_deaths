@@ -62,6 +62,7 @@ for file in files:
 				BLOCK_WIDTH = TILE_SIZE
 				BLOCK_HEIGHT = TILE_SIZE
 				BLOCK_TILES = 1
+				BLOCKS_WIDE = TILES_WIDE
 		elif new_filename == "GUI" and y == 7:
 			BLOCK_TILES = 4
 			BLOCK_WIDTH = TILE_SIZE * 4

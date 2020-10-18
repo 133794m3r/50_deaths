@@ -9,6 +9,7 @@ require 'src/Dependencies'
 
 function love.load()
 	love.window.setTitle("50 Deaths")
+	love.window.setMode(640,512)
 	TestWorld = World()
 end
 

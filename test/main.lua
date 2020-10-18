@@ -1,6 +1,7 @@
 local bump = require "bump"
 local sti = require "sti"
 gPlayer = {}
+
 function love.load()
 	love.window.setTitle("Test Map")
 	-- Grab window size

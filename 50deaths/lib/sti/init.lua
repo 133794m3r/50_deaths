@@ -664,8 +664,10 @@ function Map:setObjectSpriteBatches(layer)
 				layer = layer,
 				gid   = tile.gid,
 				x     = tileX,
-				y     = tileY - oy,
+				y     = tileY,
 				r     = tileR,
+				sx    = tile.sx * sx,
+				sy    = tile.sy * sy,
 				oy    = oy
 			}
 
@@ -800,7 +802,7 @@ function Map:update(dt)
 			if update and self.tileInstances[tile.gid] then
 				for _, j in pairs(self.tileInstances[tile.gid]) do
 					local t = self.tiles[tonumber(tile.animation[tile.frame].tileid) + self.tilesets[tile.tileset].firstgid]
-					j.batch:set(j.id, t.quad, j.x, j.y, j.r, tile.sx, tile.sy, 0, j.oy)
+					j.batch:set(j.id, t.quad, j.x, j.y, j.r, j.sx, j.sy, 0, j.oy)
 				end
 			end
 		end
@@ -933,16 +935,18 @@ function Map:drawObjectLayer(layer)
 	end
 
 	for _, object in ipairs(layer.objects) do
-		if object.shape == "rectangle" and not object.gid then
-			drawShape(object.rectangle, "rectangle")
-		elseif object.shape == "ellipse" then
-			drawShape(object.ellipse, "ellipse")
-		elseif object.shape == "polygon" then
-			drawShape(object.polygon, "polygon")
-		elseif object.shape == "polyline" then
-			drawShape(object.polyline, "polyline")
-		elseif object.shape == "point" then
-			lg.points(object.x, object.y)
+		if object.visible then
+			if object.shape == "rectangle" and not object.gid then
+				drawShape(object.rectangle, "rectangle")
+			elseif object.shape == "ellipse" then
+				drawShape(object.ellipse, "ellipse")
+			elseif object.shape == "polygon" then
+				drawShape(object.polygon, "polygon")
+			elseif object.shape == "polyline" then
+				drawShape(object.polyline, "polyline")
+			elseif object.shape == "point" then
+				lg.points(object.x, object.y)
+			end
 		end
 	end
 
@@ -1080,30 +1084,6 @@ function Map:getTileProperties(layer, x, y)
 	end
 
 	return tile.properties
-end
-
-
----- Get an object by index.
--- @param layer The layer that the Object belongs to.
--- @param object The object you want to get.
--- @return the table representing the object.
-function Map:getObject(layer,object)
-	local o = self.layers[layer].objects
-	if type(object) == "number" then
-		o = o[object]
-	else
-		for _, v in ipairs(o) do
-			if v.name == object then
-				o = v
-				break
-			end
-		end
-	end
-	if not o then
-		return {}
-	else
-		return o
-	end
 end
 
 --- Get custom properties from Object
@@ -1482,6 +1462,32 @@ function Map:convertPixelToTile(x, y)
 	end
 end
 
+function Map:indexAllObjects(layer,tileHeight, tileWidth)
+	self.tileIndexedObjects = {}
+	for _,obj in ipairs(layer.objects) do
+		self.tileIndexedObjects[bit.lshift(math.floor(obj.x / tileHeight), 16) + math.floor(obj.y/tileWidth)] = obj
+	end
+end
+
+function Map:getTileObject(x,y)
+	local obj = self.tileIndexedObjects[bit.lshift(x,16) + y]
+	if obj then
+		return obj
+	else
+		return nil
+	end
+end
+
+function Map:getObject(layer,obj_name)
+	--print_r(self.layers[layer])
+	for _,t in ipairs(self.layers[layer].objects) do
+		print(_,t)
+		if t.name == obj_name then
+			return t
+		end
+	end
+	return nil
+end
 --- A list of individual layers indexed both by draw order and name
 -- @table Map.layers
 -- @see TileLayer

@@ -138,8 +138,8 @@ for file in files:
 		#counter += 1
 
 	# save both images.
-	new_img = new_img.convert("P", palette=Image.ADAPTIVE, colors=16)
-	num_img = num_img.convert("P", palette=Image.ADAPTIVE, colors=32)
+	#new_img = new_img.convert("P", palette=Image.ADAPTIVE, colors=16)
+	#num_img = num_img.convert("P", palette=Image.ADAPTIVE, colors=32)
 	# num_img = num_img.tobytes()
 	# new_img = new_img.tobytes()
 	#
